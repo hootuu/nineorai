@@ -1,12 +1,12 @@
 package services
 
 import (
-	"nineorai/services/asset"
-	"nineorai/services/identity"
-	"nineorai/services/node"
-	"nineorai/services/stake"
-	"nineorai/services/token"
-	"nineorai/services/vn"
+	"github.com/hootuu/nineorai/services/asset"
+	"github.com/hootuu/nineorai/services/identity"
+	"github.com/hootuu/nineorai/services/node"
+	"github.com/hootuu/nineorai/services/stake"
+	"github.com/hootuu/nineorai/services/token"
+	"github.com/hootuu/nineorai/services/vn"
 )
 
 type Nineora interface {

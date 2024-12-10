@@ -1,7 +1,7 @@
 package domains
 
 import (
-	"nineorai/keys"
+	"github.com/hootuu/nineorai/keys"
 )
 
 type IdentityAddr = keys.Address

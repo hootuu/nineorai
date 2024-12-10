@@ -1,7 +1,7 @@
 package tests
 
 import (
-	"nineorai/domains"
+	"github.com/hootuu/nineorai/domains"
 	"testing"
 )
 

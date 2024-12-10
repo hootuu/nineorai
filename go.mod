@@ -1,4 +1,4 @@
-module nineorai
+module github.com/hootuu/nineorai
 
 go 1.23
 

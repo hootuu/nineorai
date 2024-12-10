@@ -1,6 +1,6 @@
 package domains
 
-import "nineorai/keys"
+import "github.com/hootuu/nineorai/keys"
 
 type StakeAddr = keys.Address
 

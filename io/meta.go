@@ -1,6 +1,6 @@
 package io
 
-import "nineorai/domains"
+import "github.com/hootuu/nineorai/domains"
 
 type MetaManager interface {
 	SetMeta(dict domains.Dict, ctx Ctx) Error

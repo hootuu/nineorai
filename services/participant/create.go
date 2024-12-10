@@ -1,6 +1,6 @@
 package participant
 
-import "nineorai/keys"
+import "github.com/hootuu/nineorai/keys"
 
 type Create struct {
 }

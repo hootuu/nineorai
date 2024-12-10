@@ -1,6 +1,6 @@
 package io
 
-import "nineorai/domains"
+import "github.com/hootuu/nineorai/domains"
 
 type TagManager interface {
 	AddTag(tag domains.Tag, ctx Ctx) Error

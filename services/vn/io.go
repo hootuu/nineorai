@@ -1,8 +1,8 @@
 package vn
 
 import (
-	"nineorai/domains"
-	"nineorai/keys"
+	"github.com/hootuu/nineorai/domains"
+	"github.com/hootuu/nineorai/keys"
 )
 
 type Create struct {

@@ -1,9 +1,9 @@
 package meta
 
 import (
+	"github.com/hootuu/nineorai/domains"
+	"github.com/hootuu/nineorai/io"
 	nio "io"
-	"nineorai/domains"
-	"nineorai/io"
 )
 
 type Service interface {

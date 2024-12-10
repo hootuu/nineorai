@@ -1,6 +1,6 @@
 package io
 
-import "nineorai/keys"
+import "github.com/hootuu/nineorai/keys"
 
 type Ctx struct {
 	Payer     keys.PrivateKey `bson:"payer" json:"payer"`

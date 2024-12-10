@@ -1,8 +1,8 @@
 package token
 
 import (
-	"nineorai/domains"
-	"nineorai/io"
+	"github.com/hootuu/nineorai/domains"
+	"github.com/hootuu/nineorai/io"
 )
 
 type Service interface {

@@ -1,9 +1,9 @@
 package identity
 
 import (
-	"nineorai/domains"
-	"nineorai/io"
-	"nineorai/keys"
+	"github.com/hootuu/nineorai/domains"
+	"github.com/hootuu/nineorai/io"
+	"github.com/hootuu/nineorai/keys"
 )
 
 type Service interface {

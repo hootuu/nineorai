@@ -2,7 +2,7 @@ package tests
 
 import (
 	"fmt"
-	"nineorai/domains"
+	"github.com/hootuu/nineorai/domains"
 	"testing"
 )
 
