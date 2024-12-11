@@ -11,7 +11,7 @@ type Service interface {
 	io.TagManager
 	io.MetaManager
 
-	Create(req Create) (keys.NineoraID, keys.Address, io.Error)
+	Create(req Create, ctx CreateCtx) (*keys.NineoraID, *domains.IdentityAddr, io.Error)
 
 	Networks(who domains.IdentityAddr) (io.Pagination[domains.Network], io.Error)
 
