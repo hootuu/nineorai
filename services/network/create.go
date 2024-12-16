@@ -6,16 +6,14 @@ import (
 	"github.com/hootuu/nineorai/keys"
 )
 
-const MetaName = "name"
-const MetaUri = "uri"
-
 type Create struct {
-	Authority keys.Address          `json:"authority"`
-	Address   domains.NetworkAddr   `json:"address"`
-	Symbol    domains.NetworkSymbol `json:"symbol"`
-	Ctrl      domains.Ctrl          `json:"ctrl,omitempty"`
-	Tag       domains.Tag           `json:"tag,omitempty"`
-	Meta      domains.Meta          `json:"meta,omitempty"`
+	Link      domains.Link          `json:"link" bson:"link"`
+	Authority keys.Address          `json:"authority" bson:"authority"`
+	Address   domains.NetworkAddr   `json:"address" bson:"address"`
+	Symbol    domains.NetworkSymbol `json:"symbol" bson:"symbol"`
+	Ctrl      domains.Ctrl          `json:"ctrl,omitempty" bson:"ctrl,omitempty"`
+	Tag       domains.Tag           `json:"tag,omitempty" bson:"tag,omitempty"`
+	Meta      domains.Meta          `json:"meta,omitempty" bson:"meta,omitempty"`
 }
 
 type CreateResult struct {
@@ -35,7 +33,7 @@ func (c Create) Validate() *errors.Error {
 	if c.Meta == nil {
 		return errors.Verify("require meta")
 	}
-	if err := c.Meta.MustExists(MetaName, MetaUri); err != nil {
+	if err := c.Meta.MustExists(domains.MetaName, domains.MetaUri); err != nil {
 		return err
 	}
 	return nil

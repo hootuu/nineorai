@@ -2,6 +2,12 @@ package domains
 
 import "github.com/hootuu/gelato/errors"
 
+const (
+	MetaName        = "name"
+	MetaUri         = "uri"
+	MetaDescription = "description"
+)
+
 type MetaID string
 type MetaRef string
 

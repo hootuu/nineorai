@@ -9,7 +9,7 @@ import (
 
 type Create struct {
 	CustomID string               `json:"custom_id"`
-	Password []byte               `json:"password"`
+	Password domains.Password     `json:"password"`
 	Address  domains.IdentityAddr `json:"address"`
 	Ctrl     domains.Ctrl         `json:"ctrl"`
 	Tag      domains.Tag          `json:"tag"`
@@ -25,8 +25,8 @@ func (c Create) Validate() *errors.Error {
 	if len(strings.TrimSpace(c.CustomID)) == 0 {
 		return errors.Verify("custom_id is required")
 	}
-	if len(c.Password) == 0 {
-		return errors.Verify("password is required")
+	if !c.Password.IsValid() {
+		return errors.Verify("password invalid")
 	}
 	if c.Address.IsEmpty() {
 		return errors.Verify("address is required")

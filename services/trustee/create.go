@@ -4,14 +4,22 @@ import (
 	"github.com/hootuu/gelato/crtpto/rand"
 	"github.com/hootuu/gelato/errors"
 	"github.com/hootuu/gelato/idx"
+	"github.com/hootuu/nineorai/domains"
 	"github.com/hootuu/nineorai/keys"
-	"strings"
 )
 
 type Create struct {
 	Trustee  bool
-	BoundID  string
-	Password string
+	Link     domains.Link
+	Password domains.Password
+}
+
+func NewCreate(trustee bool, linkStr string, password string) *Create {
+	return &Create{
+		Trustee:  trustee,
+		Link:     domains.NewLink(linkStr),
+		Password: domains.NewPassword(password),
+	}
 }
 
 func NewRandCreate(trustee bool) *Create {
@@ -24,8 +32,8 @@ func NewRandCreate(trustee bool) *Create {
 	}
 	return &Create{
 		Trustee:  true,
-		BoundID:  idx.New(),
-		Password: pwd,
+		Link:     domains.NewLink(idx.New()),
+		Password: domains.NewPassword(pwd),
 	}
 }
 
@@ -34,11 +42,11 @@ type CreateResult struct {
 }
 
 func (c Create) Validate() *errors.Error {
-	if len(strings.TrimSpace(c.BoundID)) == 0 {
-		return errors.Verify("require bound id")
+	if !c.Link.IsValid() {
+		return errors.Verify("invalid link")
 	}
-	if len(strings.TrimSpace(c.Password)) == 0 {
-		return errors.Verify("require password")
+	if !c.Password.IsValid() {
+		return errors.Verify("invalid password")
 	}
 	return nil
 }

@@ -29,7 +29,7 @@ func (s NetworkSymbol) Validate() *errors.Error {
 		return errors.Verify("symbol is too long")
 	}
 
-	re := regexp.MustCompile("^[a-zA-Z0-9]+$")
+	re := regexp.MustCompile("^[a-zA-Z0-9]{1,16}$")
 
 	b := re.MatchString(str)
 	if !b {
