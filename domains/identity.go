@@ -7,12 +7,14 @@ import (
 type IdentityAddr = keys.Address
 
 type Identity struct {
-	Symbol string `bson:"symbol" json:"symbol"`
-	Ctrl   Ctrl   `bson:"ctrl" json:"ctrl"`
-	Tag    Tag    `bson:"tag" json:"tag"`
-	Meta   Meta   `bson:"meta" json:"meta"`
+	Address IdentityAddr `bson:"address" json:"address"`
+	Symbol  string       `bson:"symbol" json:"symbol"`
+	Ctrl    Ctrl         `bson:"ctrl" json:"ctrl"`
+	Tag     Tag          `bson:"tag" json:"tag"`
+	Meta    Meta         `bson:"meta" json:"meta"`
 }
 
+// IdentityCollar todo will del
 type IdentityCollar struct {
 	Ctrl bool `bson:"ctrl" json:"ctrl"`
 	Tag  bool `bson:"tag" json:"tag"`

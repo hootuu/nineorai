@@ -1,17 +1,18 @@
 package domains
 
 import (
-	"errors"
+	"fmt"
+	"github.com/hootuu/gelato/errors"
 	"strconv"
 )
 
 type Dict map[string]interface{}
 
-var DictErrInvalidValue = errors.New("dict value must be a string or a Dict")
-var DictErrKeyNotFound = errors.New("no such key in this dict")
-var DictErrInvalidType = errors.New("the value obtained is not of the expected type")
+var DictErrInvalidValue = errors.Verify("dict value must be a string or a Dict")
+var DictErrKeyNotFound = errors.Verify("no such key in this dict")
+var DictErrInvalidType = errors.Verify("the value obtained is not of the expected type")
 
-func NewDict(values ...map[string]interface{}) (Dict, error) {
+func NewDict(values ...map[string]interface{}) (Dict, *errors.Error) {
 	d := make(Dict)
 	if len(values) > 0 {
 		value := values[0]
@@ -25,12 +26,17 @@ func NewDict(values ...map[string]interface{}) (Dict, error) {
 	return d, nil
 }
 
+func MustNewDict(values ...map[string]interface{}) Dict {
+	dict, _ := NewDict(values...)
+	return dict
+}
+
 func (dict Dict) Exists(key string) bool {
 	_, ok := dict[key]
 	return ok
 }
 
-func (dict Dict) Set(key string, value interface{}) error {
+func (dict Dict) Set(key string, value interface{}) *errors.Error {
 	switch v := value.(type) {
 	case string:
 		dict[key] = v
@@ -42,7 +48,21 @@ func (dict Dict) Set(key string, value interface{}) error {
 	return nil
 }
 
-func (dict Dict) GetString(key string) (string, error) {
+func (dict Dict) MustSet(key string, value interface{}) Dict {
+	_ = dict.Set(key, value)
+	return dict
+}
+
+func (dict Dict) MustExists(key ...string) *errors.Error {
+	for _, i := range key {
+		if !dict.Exists(i) {
+			return errors.Verify(fmt.Sprintf("key %s does not exist in meta", i))
+		}
+	}
+	return nil
+}
+
+func (dict Dict) GetString(key string) (string, *errors.Error) {
 	value, exists := dict[key]
 	if !exists {
 		return "", DictErrKeyNotFound
@@ -54,79 +74,79 @@ func (dict Dict) GetString(key string) (string, error) {
 	return strValue, nil
 }
 
-func (dict Dict) GetInt16(key string) (int16, error) {
+func (dict Dict) GetInt16(key string) (int16, *errors.Error) {
 	strValue, err := dict.GetString(key)
 	if err != nil {
 		return 0, err
 	}
-	i, err := strconv.ParseInt(strValue, 10, 16)
-	if err != nil {
+	i, nErr := strconv.ParseInt(strValue, 10, 16)
+	if nErr != nil {
 		return 0, DictErrInvalidType
 	}
 	return int16(i), nil
 }
 
-func (dict Dict) GetInt32(key string) (int32, error) {
+func (dict Dict) GetInt32(key string) (int32, *errors.Error) {
 	strValue, err := dict.GetString(key)
 	if err != nil {
 		return 0, err
 	}
-	i, err := strconv.ParseInt(strValue, 10, 32)
-	if err != nil {
+	i, nErr := strconv.ParseInt(strValue, 10, 32)
+	if nErr != nil {
 		return 0, DictErrInvalidType
 	}
 	return int32(i), nil
 }
 
-func (dict Dict) GetInt64(key string) (int64, error) {
+func (dict Dict) GetInt64(key string) (int64, *errors.Error) {
 	strValue, err := dict.GetString(key)
 	if err != nil {
 		return 0, err
 	}
-	i, err := strconv.ParseInt(strValue, 10, 64)
-	if err != nil {
+	i, nErr := strconv.ParseInt(strValue, 10, 64)
+	if nErr != nil {
 		return 0, DictErrInvalidType
 	}
 	return i, nil
 }
 
-func (dict Dict) GetFloat32(key string) (float32, error) {
+func (dict Dict) GetFloat32(key string) (float32, *errors.Error) {
 	strValue, err := dict.GetString(key)
 	if err != nil {
 		return 0, err
 	}
-	f, err := strconv.ParseFloat(strValue, 32)
-	if err != nil {
+	f, nErr := strconv.ParseFloat(strValue, 32)
+	if nErr != nil {
 		return 0, DictErrInvalidType
 	}
 	return float32(f), nil
 }
 
-func (dict Dict) GetFloat64(key string) (float64, error) {
+func (dict Dict) GetFloat64(key string) (float64, *errors.Error) {
 	strValue, err := dict.GetString(key)
 	if err != nil {
 		return 0, err
 	}
-	f, err := strconv.ParseFloat(strValue, 64)
-	if err != nil {
+	f, nErr := strconv.ParseFloat(strValue, 64)
+	if nErr != nil {
 		return 0, DictErrInvalidType
 	}
 	return f, nil
 }
 
-func (dict Dict) GetBool(key string) (bool, error) {
+func (dict Dict) GetBool(key string) (bool, *errors.Error) {
 	strValue, err := dict.GetString(key)
 	if err != nil {
 		return false, err
 	}
-	b, err := strconv.ParseBool(strValue)
-	if err != nil {
+	b, nErr := strconv.ParseBool(strValue)
+	if nErr != nil {
 		return false, DictErrInvalidType
 	}
 	return b, nil
 }
 
-func (dict Dict) GetDict(key string) (Dict, error) {
+func (dict Dict) GetDict(key string) (Dict, *errors.Error) {
 	value, exists := dict[key]
 	if !exists {
 		return nil, DictErrKeyNotFound

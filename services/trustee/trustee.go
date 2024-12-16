@@ -1,4 +1,4 @@
-package identity
+package trustee
 
 import (
 	"github.com/hootuu/nineorai/io"

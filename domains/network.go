@@ -7,29 +7,19 @@ import (
 	"strings"
 )
 
-type TokenAddr = keys.Address
+type NetworkAddr = keys.Address
 
-type Token struct {
+type NetworkSymbol string
+
+type Network struct {
 	Authority keys.Address `json:"authority" bson:"authority"`
-	Network   NetworkAddr  `json:"network" bson:"network"`
-	Mint      TokenAddr    `json:"address" bson:"address"`
 	Symbol    string       `json:"symbol" bson:"symbol"`
-	Decimals  uint8        `json:"decimals" bson:"decimals"`
 	Ctrl      Ctrl         `json:"ctrl" bson:"ctrl"`
 	Tag       Tag          `json:"tag" bson:"tag"`
 	Meta      Meta         `json:"meta" bson:"meta"`
 }
 
-type TokenAccount struct {
-	Mint     TokenAddr `json:"mint" bson:"mint"`
-	Amount   string    `json:"amount" bson:"amount"`
-	Decimals uint8     `json:"decimals" bson:"decimals"`
-	UiAmount string    `json:"ui_amount" bson:"ui_amount"`
-}
-
-type TokenSymbol string
-
-func (s TokenSymbol) Validate() *errors.Error {
+func (s NetworkSymbol) Validate() *errors.Error {
 	str := strings.TrimSpace(string(s))
 	strLen := len(str)
 	if strLen == 0 {
@@ -43,7 +33,7 @@ func (s TokenSymbol) Validate() *errors.Error {
 
 	b := re.MatchString(str)
 	if !b {
-		return errors.Verify("token symbol is invalid")
+		return errors.Verify("network symbol is invalid")
 	}
 	return nil
 }

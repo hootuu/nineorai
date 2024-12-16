@@ -16,11 +16,11 @@ const (
 
 type PrivateKey []byte
 type PublicKey [PublicKeyLength]byte
-type Signature [64]byte
 
 type Key struct {
 	Private PrivateKey `bson:"private" json:"private"`
 	Public  PublicKey  `bson:"public" json:"public"`
+	addr    Address
 }
 
 func NewKey() (*Key, *errors.Error) {
@@ -33,6 +33,13 @@ func NewKey() (*Key, *errors.Error) {
 	}
 	copy(key.Public[:], pub)
 	return key, nil
+}
+
+func (k *Key) Address() Address {
+	if len(string(k.addr)) == 0 {
+		k.addr = k.Public.Address()
+	}
+	return k.addr
 }
 
 func (k PrivateKey) PublicKey() PublicKey {
@@ -81,6 +88,10 @@ func (p PublicKey) Verify(message []byte, signature Signature) bool {
 
 func (p PublicKey) ToBase58() string {
 	return base58.Encode(p[:])
+}
+
+func (p PublicKey) Address() Address {
+	return Address(p.ToBase58())
 }
 
 func PrivateKeyFromBase58(pri string) (PrivateKey, *errors.Error) {

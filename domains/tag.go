@@ -18,12 +18,13 @@ func (tag *Tag) Exists(t string) bool {
 	return false
 }
 
-func (tag *Tag) Append(t string) {
+func (tag *Tag) Append(t string) *Tag {
 	if tag.Exists(t) {
-		return
+		return tag
 	}
 
 	*tag = append(*tag, t)
+	return tag
 }
 
 func (tag *Tag) Remove(t string) {

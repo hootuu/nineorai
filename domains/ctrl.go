@@ -1,29 +1,32 @@
 package domains
 
 import (
-	"errors"
+	"github.com/hootuu/gelato/errors"
 )
 
 // Ctrl LEN * 8
 type Ctrl []byte
 
-var CtrlErrInvalidPos = errors.New("position out of bounds")
-
-func NewCtrl(length ...int) (Ctrl, error) {
+func NewCtrl(length ...int) (Ctrl, *errors.Error) {
 	size := 128
 	if len(length) > 0 {
 		size = length[0]
 	}
 	if size <= 0 {
-		return nil, errors.New("length must be greater than 0")
+		return nil, errors.Verify("length must be greater than 0")
 	}
 	byteSize := (size + 7) / 8
 	return make(Ctrl, byteSize), nil
 }
 
-func (ctrl Ctrl) Set(pos int, value bool) error {
+func MustNewCtrl(length ...int) Ctrl {
+	ctrl, _ := NewCtrl(length...)
+	return ctrl
+}
+
+func (ctrl Ctrl) Set(pos int, value bool) *errors.Error {
 	if pos < 0 || pos >= len(ctrl)*8 {
-		return CtrlErrInvalidPos
+		return errors.Verify("position out of bounds")
 	}
 
 	byteIndex := pos / 8
@@ -40,9 +43,14 @@ func (ctrl Ctrl) Set(pos int, value bool) error {
 	return nil
 }
 
-func (ctrl Ctrl) Check(pos int) (bool, error) {
+func (ctrl Ctrl) MustSet(pos int, value bool) Ctrl {
+	_ = ctrl.Set(pos, value)
+	return ctrl
+}
+
+func (ctrl Ctrl) Check(pos int) (bool, *errors.Error) {
 	if pos < 0 || pos >= len(ctrl)*8 {
-		return false, CtrlErrInvalidPos
+		return false, errors.Verify("position out of bounds")
 	}
 
 	byteIndex := pos / 8
