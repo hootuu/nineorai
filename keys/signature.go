@@ -1,26 +1,26 @@
 package keys
 
 import (
-	"encoding/hex"
 	"fmt"
 	"github.com/hootuu/gelato/errors"
+	"github.com/mr-tron/base58"
 )
 
 type Signature [64]byte
 
-type SignatureHex string
+type SignatureBase58 string
 
-func (s *Signature) HexEncode() SignatureHex {
-	return SignatureHex(hex.EncodeToString(s[:]))
+func (s *Signature) HexEncode() SignatureBase58 {
+	return SignatureBase58(base58.Encode(s[:]))
 }
 
-func (s *SignatureHex) Decode() (*Signature, *errors.Error) {
+func (s *SignatureBase58) Decode() (*Signature, *errors.Error) {
 	str := string(*s)
-	if len(str) != 128 {
-		return nil, errors.Verify(fmt.Sprintf("invalid signature length: got %d want 128", len(str)))
+	if len(str) == 0 {
+		return nil, errors.Verify(fmt.Sprintf("invalid signature length: got %d", len(str)))
 	}
 
-	decoded, err := hex.DecodeString(str)
+	decoded, err := base58.Decode(str)
 	if err != nil {
 		return nil, errors.E("invalid_signature", err.Error())
 	}

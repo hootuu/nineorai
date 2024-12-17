@@ -7,41 +7,10 @@ import (
 type IdentityAddr = keys.Address
 
 type Identity struct {
-	Address IdentityAddr `bson:"address" json:"address"`
-	Symbol  string       `bson:"symbol" json:"symbol"`
-	Ctrl    Ctrl         `bson:"ctrl" json:"ctrl"`
-	Tag     Tag          `bson:"tag" json:"tag"`
-	Meta    Meta         `bson:"meta" json:"meta"`
-}
-
-// IdentityCollar todo will del
-type IdentityCollar struct {
-	Ctrl bool `bson:"ctrl" json:"ctrl"`
-	Tag  bool `bson:"tag" json:"tag"`
-	Meta bool `bson:"meta" json:"meta"`
-}
-
-func NewIdentityCollar() *IdentityCollar {
-	return &IdentityCollar{}
-}
-
-func (collar *IdentityCollar) WithCtrl() *IdentityCollar {
-	collar.Ctrl = true
-	return collar
-}
-
-func (collar *IdentityCollar) WithTag() *IdentityCollar {
-	collar.Tag = true
-	return collar
-}
-
-func (collar *IdentityCollar) WithMeta() *IdentityCollar {
-	collar.Meta = true
-	return collar
-}
-
-type IdentityWrap struct {
+	Address   IdentityAddr   `bson:"address" json:"address"`
 	NineoraID keys.NineoraID `bson:"nineora_id" json:"nineora_id"`
-	Address   keys.Address   `bson:"address" json:"address"`
-	Identity  Identity       `bson:"identity" json:"identity"`
+	Link      Link           `bson:"link" json:"link"`
+	Ctrl      Ctrl           `bson:"ctrl,omitempty" json:"ctrl,omitempty"`
+	Tag       Tag            `bson:"tag,omitempty" json:"tag,omitempty"`
+	Meta      Meta           `bson:"meta,omitempty" json:"meta,omitempty"`
 }

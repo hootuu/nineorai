@@ -4,11 +4,10 @@ import (
 	"github.com/hootuu/gelato/errors"
 	"github.com/hootuu/nineorai/domains"
 	"github.com/hootuu/nineorai/keys"
-	"strings"
 )
 
 type Create struct {
-	CustomID string               `json:"custom_id"`
+	Link     domains.Link         `json:"link"`
 	Password domains.Password     `json:"password"`
 	Address  domains.IdentityAddr `json:"address"`
 	Ctrl     domains.Ctrl         `json:"ctrl"`
@@ -22,8 +21,8 @@ type CreateResult struct {
 }
 
 func (c Create) Validate() *errors.Error {
-	if len(strings.TrimSpace(c.CustomID)) == 0 {
-		return errors.Verify("custom_id is required")
+	if !c.Link.IsValid() {
+		return errors.Verify("link is required")
 	}
 	if !c.Password.IsValid() {
 		return errors.Verify("password invalid")

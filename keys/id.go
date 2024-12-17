@@ -8,6 +8,10 @@ import (
 
 type NineoraID string
 
+func (n NineoraID) IsValid() bool {
+	return ValidateNineoraID(string(n))
+}
+
 func ValidateNineoraID(idStr string) bool {
 	for _, ch := range idStr {
 		if !unicode.IsDigit(ch) {

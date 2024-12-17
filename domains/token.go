@@ -10,6 +10,7 @@ import (
 type TokenAddr = keys.Address
 
 type Token struct {
+	Link      Link         `json:"link" bson:"link"`
 	Authority keys.Address `json:"authority" bson:"authority"`
 	Network   NetworkAddr  `json:"network" bson:"network"`
 	Mint      TokenAddr    `json:"address" bson:"address"`
@@ -20,11 +21,15 @@ type Token struct {
 	Meta      Meta         `json:"meta" bson:"meta"`
 }
 
+type TokenAccountAddr = keys.Address
+
 type TokenAccount struct {
-	Mint     TokenAddr `json:"mint" bson:"mint"`
-	Amount   string    `json:"amount" bson:"amount"`
-	Decimals uint8     `json:"decimals" bson:"decimals"`
-	UiAmount string    `json:"ui_amount" bson:"ui_amount"`
+	Address  TokenAccountAddr `json:"address" bson:"address"`
+	Mint     TokenAddr        `json:"mint" bson:"mint"`
+	Symbol   TokenSymbol      `json:"symbol" bson:"symbol"`
+	Balance  uint64           `json:"balance" bson:"balance"`
+	Decimals uint8            `json:"decimals" bson:"decimals"`
+	UiAmount string           `json:"ui_amount" bson:"ui_amount"`
 }
 
 type TokenSymbol string

@@ -6,6 +6,7 @@ import (
 	"github.com/hootuu/gelato/errors"
 	"github.com/hootuu/gelato/idx"
 	"github.com/hootuu/gelato/io/serializer"
+	"github.com/hootuu/nineorai/domains"
 	"github.com/hootuu/nineorai/keys"
 	"time"
 )
@@ -15,12 +16,12 @@ type RequestData interface {
 }
 
 type Request[T RequestData] struct {
-	ID         string                             `json:"id" bson:"id"`
-	Data       *T                                 `json:"data" bson:"data"`
-	Accounts   AccountSet                         `json:"accounts" bson:"accounts"`
-	Timestamp  int64                              `json:"timestamp" bson:"timestamp"`
-	Nonce      int64                              `json:"nonce" bson:"nonce"`
-	Signatures map[keys.Address]keys.SignatureHex `json:"signatures" bson:"signatures"`
+	ID         string                                `json:"id" bson:"id"`
+	Data       *T                                    `json:"data" bson:"data"`
+	Accounts   AccountSet                            `json:"accounts" bson:"accounts"`
+	Timestamp  int64                                 `json:"timestamp" bson:"timestamp"`
+	Nonce      int64                                 `json:"nonce" bson:"nonce"`
+	Signatures map[keys.Address]keys.SignatureBase58 `json:"signatures" bson:"signatures"`
 }
 
 func NewRequest[T RequestData](data *T) *Request[T] {
@@ -31,7 +32,7 @@ func NewRequest[T RequestData](data *T) *Request[T] {
 		Accounts:   NewAccountSet(),
 		Timestamp:  time.Now().UnixMilli(),
 		Nonce:      randInt64,
-		Signatures: make(map[keys.Address]keys.SignatureHex),
+		Signatures: make(map[keys.Address]keys.SignatureBase58),
 	}
 }
 
@@ -193,4 +194,23 @@ func (r *Request[T]) Validate() *errors.Error {
 		return errors.Verify("there can only be one payer")
 	}
 	return nil
+}
+
+func (r *Request[T]) MustGetSignature() (domains.Signature, *errors.Error) {
+	if r.Signatures == nil {
+		return "", errors.Verify("require signatures")
+	}
+	if r.Accounts == nil {
+		return "", errors.Verify("require accounts")
+	}
+	payer, err := r.Accounts.MustGetPayer()
+	if err != nil {
+		return "", err
+	}
+	for address, hex := range r.Signatures {
+		if address == payer.Address {
+			return domains.Signature(hex), nil
+		}
+	}
+	return "", errors.Verify("require payer signature")
 }

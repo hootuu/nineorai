@@ -1,3 +1,3 @@
 package domains
 
-type Tx struct{}
+type Tx string

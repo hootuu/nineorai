@@ -1,6 +1,9 @@
 package domains
 
 import (
+	"database/sql/driver"
+	"encoding/json"
+	nerr "errors"
 	"fmt"
 	"github.com/hootuu/gelato/errors"
 	"strconv"
@@ -156,4 +159,22 @@ func (dict Dict) GetDict(key string) (Dict, *errors.Error) {
 		return nil, DictErrInvalidType
 	}
 	return dictValue, nil
+}
+
+func (dict *Dict) Scan(value interface{}) error {
+	if value == nil {
+		dict = nil
+		return nil
+	}
+
+	switch v := value.(type) {
+	case []byte:
+		return json.Unmarshal(v, dict)
+	default:
+		return nerr.New("invalid type for Dict")
+	}
+}
+
+func (dict Dict) Value() (driver.Value, error) {
+	return json.Marshal(dict)
 }

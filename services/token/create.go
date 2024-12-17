@@ -7,6 +7,7 @@ import (
 )
 
 type Create struct {
+	Link      domains.Link        `json:"link"`
 	Authority keys.Address        `json:"authority"`
 	Network   domains.NetworkAddr `json:"network"`
 	Address   domains.TokenAddr   `json:"address"`
@@ -22,6 +23,9 @@ type CreateResult struct {
 }
 
 func (c Create) Validate() *errors.Error {
+	if !c.Link.IsValid() {
+		return errors.Verify("require link")
+	}
 	if c.Authority.IsEmpty() {
 		return errors.Verify("require authority")
 	}
