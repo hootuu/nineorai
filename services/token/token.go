@@ -6,5 +6,5 @@ type Service interface {
 	Create(req *io.Request[Create]) *io.Response[CreateResult]
 	Mint(req *io.Request[Mint]) *io.Response[MintResult]
 
-	LoadAccountByAuthority(req *io.Request[LoadByAuthority]) *io.Response[LoadResult]
+	AccLoadByAuth(req *io.Request[AccLoadByAuth]) *io.Response[AccLoadResult]
 }

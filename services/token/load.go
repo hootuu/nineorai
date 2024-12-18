@@ -6,12 +6,13 @@ import (
 	"github.com/hootuu/nineorai/domains"
 )
 
-type LoadByAuthority struct {
-	Authority domains.IdentityAddr `json:"authority" bson:"authority"`
-	Page      pagination.Page      `json:"page" bson:"page"`
+type AccLoadByAuth struct {
+	Authority domains.IdentityAddr  `json:"authority" bson:"authority"`
+	Networks  []domains.NetworkAddr `json:"network" bson:"network"` //IF EMPTY, RETURN ALL
+	Page      pagination.Page       `json:"page" bson:"page"`
 }
 
-func (l LoadByAuthority) Validate() *errors.Error {
+func (l AccLoadByAuth) Validate() *errors.Error {
 	if l.Authority.IsEmpty() {
 		return errors.Verify("invalid authority")
 	}
@@ -24,7 +25,7 @@ func (l LoadByAuthority) Validate() *errors.Error {
 	return nil
 }
 
-type LoadResult struct {
-	Data   []domains.TokenAccount `json:"data" bson:"data"`
-	Paging pagination.Paging      `json:"paging" bson:"paging"`
+type AccLoadResult struct {
+	Data   []*domains.TokenAccount `json:"data" bson:"data"`
+	Paging pagination.Paging       `json:"paging" bson:"paging"`
 }

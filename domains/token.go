@@ -1,10 +1,19 @@
 package domains
 
 import (
+	"fmt"
 	"github.com/hootuu/gelato/errors"
 	"github.com/hootuu/nineorai/keys"
+	"math"
 	"regexp"
 	"strings"
+)
+
+const (
+	TokenCtrlNonDivisible    = 1
+	TokenCtrlNonTransferable = 2
+	TokenCtrlBurnable        = 3
+	TokenCtrlNonCollateral   = 4
 )
 
 type TokenAddr = keys.Address
@@ -27,9 +36,18 @@ type TokenAccount struct {
 	Address  TokenAccountAddr `json:"address" bson:"address"`
 	Mint     TokenAddr        `json:"mint" bson:"mint"`
 	Symbol   TokenSymbol      `json:"symbol" bson:"symbol"`
+	Supply   uint64           `json:"supply" bson:"supply"`
 	Balance  uint64           `json:"balance" bson:"balance"`
 	Decimals uint8            `json:"decimals" bson:"decimals"`
-	UiAmount string           `json:"ui_amount" bson:"ui_amount"`
+}
+
+func (t *TokenAccount) UiAmount() string {
+	if t.Decimals == 0 {
+		return fmt.Sprintf("%d", t.Balance)
+	}
+	divisor := math.Pow(10, float64(t.Decimals))
+	amount := float64(t.Balance) / divisor
+	return fmt.Sprintf(fmt.Sprintf("%%.%df", t.Decimals), amount)
 }
 
 type TokenSymbol string
