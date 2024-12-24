@@ -12,13 +12,15 @@ type Create struct {
 	Trustee  bool
 	Link     domains.Link
 	Password domains.Password
+	Key      *keys.Key
 }
 
-func NewCreate(trustee bool, linkStr string, password string) *Create {
+func NewCreate(trustee bool, linkStr string, password string, key *keys.Key) *Create {
 	return &Create{
 		Trustee:  trustee,
 		Link:     domains.NewLink(linkStr),
 		Password: domains.NewPassword(password),
+		Key:      key,
 	}
 }
 
@@ -30,15 +32,17 @@ func NewRandCreate(trustee bool) *Create {
 	if err != nil {
 		pwd = idx.New()
 	}
+	key, _ := keys.NewKey()
 	return &Create{
 		Trustee:  true,
 		Link:     domains.NewLink(idx.New()),
 		Password: domains.NewPassword(pwd),
+		Key:      key,
 	}
 }
 
 type CreateResult struct {
-	Key keys.Key
+	Address keys.Address `json:"address" bson:"address"`
 }
 
 func (c Create) Validate() *errors.Error {
@@ -47,6 +51,9 @@ func (c Create) Validate() *errors.Error {
 	}
 	if !c.Password.IsValid() {
 		return errors.Verify("invalid password")
+	}
+	if c.Key == nil {
+		return errors.Verify("invalid key")
 	}
 	return nil
 }
