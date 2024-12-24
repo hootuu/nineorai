@@ -4,10 +4,12 @@ import (
 	"crypto"
 	"crypto/ed25519"
 	"crypto/rand"
+	"encoding/json"
 	"filippo.io/edwards25519"
 	"github.com/hootuu/gelato/crtpto/ed25519x"
 	"github.com/hootuu/gelato/errors"
 	"github.com/mr-tron/base58"
+	"os"
 )
 
 const (
@@ -33,6 +35,21 @@ func NewKey() (*Key, *errors.Error) {
 	}
 	copy(key.Public[:], pub)
 	return key, nil
+}
+
+func KeyFromPrivateKey(pri PrivateKey) *Key {
+	return &Key{
+		Private: pri,
+		Public:  pri.PublicKey(),
+	}
+}
+
+func KeyFromFile(path string) (*Key, *errors.Error) {
+	pk, err := PrivateKeyFromFile(path)
+	if err != nil {
+		return nil, err
+	}
+	return KeyFromPrivateKey(pk), nil
 }
 
 func (k *Key) Address() Address {
@@ -104,6 +121,30 @@ func PrivateKeyFromBase58(pri string) (PrivateKey, *errors.Error) {
 		return nil, err
 	}
 	return res, nil
+}
+
+func PrivateKeyFromFile(file string) (PrivateKey, *errors.Error) {
+	content, err := os.ReadFile(file)
+	if err != nil {
+		return nil, errors.Verify("read keygen file failed", err)
+	}
+	return PrivateKeyFromBytes(content)
+}
+
+func PrivateKeyFromBytes(content []byte) (PrivateKey, *errors.Error) {
+	var values []byte
+	nErr := json.Unmarshal(content, &values)
+	if nErr != nil {
+		return nil, errors.Verify("decode keygen file failed", nErr)
+	}
+	if len(values) != 64 {
+		return nil, errors.Verify("invalid private key length")
+	}
+	prk := PrivateKey(values)
+	if _, err := PrivateKeyValidate(prk); err != nil {
+		return nil, err
+	}
+	return prk, nil
 }
 
 func PrivateKeyValidate(b []byte) (bool, *errors.Error) {

@@ -7,10 +7,10 @@ import (
 )
 
 type Mint struct {
-	Token   domains.TokenAddr    `json:"token" bson:"token"`
-	Receive domains.IdentityAddr `json:"receive" bson:"receive"`
-	Amount  uint64               `json:"amount" bson:"amount"`
-	Memo    domains.Memo         `json:"memo" bson:"memo"`
+	Token   domains.TokenAddr `json:"token" bson:"token"`
+	Receive keys.Address      `json:"receive" bson:"receive"`
+	Amount  uint64            `json:"amount" bson:"amount"`
+	Memo    domains.Memo      `json:"memo" bson:"memo"`
 
 	TokenAuthority keys.Address `json:"token_authority" bson:"token_authority"`
 }
