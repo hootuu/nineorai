@@ -43,6 +43,10 @@ func (dict Dict) Set(key string, value interface{}) *errors.Error {
 	switch v := value.(type) {
 	case string:
 		dict[key] = v
+	case int, int8, int16, int32, int64:
+		dict[key] = v
+	case uint, uint8, uint16, uint32, uint64:
+		dict[key] = v
 	case Dict:
 		dict[key] = v
 	default:
