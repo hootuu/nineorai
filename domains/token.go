@@ -79,7 +79,7 @@ func (s TokenSymbol) Validate() *errors.Error {
 const AtaLinkTpl = "_*_*A*T*A*_*_"
 
 func GetAtaLink(mint TokenAddr, authority IdentityAddr) Link {
-	return GetTokenAccountLink(AtaLinkTpl, authority, mint)
+	return GetTokenAccountLink(AtaLinkTpl, mint, authority)
 }
 
 func GetTokenAccountLink(linkStr string, mint TokenAddr, authority keys.Address) Link {
