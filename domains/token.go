@@ -74,3 +74,14 @@ func (s TokenSymbol) Validate() *errors.Error {
 	}
 	return nil
 }
+
+const AtaLinkTpl = "_*_*A*T*A*_*_"
+
+func GetAtaLink(mint TokenAddr, authority IdentityAddr) Link {
+	return GetTokenAccountLink(AtaLinkTpl, authority, mint)
+}
+
+func GetTokenAccountLink(linkStr string, mint TokenAddr, authority keys.Address) Link {
+	str := fmt.Sprintf("%s*@*%s*@*%s", linkStr, authority.String(), mint.String())
+	return NewLink(str)
+}
