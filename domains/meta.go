@@ -9,6 +9,7 @@ const (
 	MetaDescription = "description"
 	MetaImages      = "images"
 	MetaVideos      = "videos"
+	MetaCreated     = "created"
 
 	MetaAssetTypeId   = "asset:id"
 	MetaAssetTypeCode = "asset:type:code"
@@ -20,6 +21,12 @@ const (
 	MetaAssetSTOC  = "asset:stoc"  // The address for Short-term order commission
 	MetaAssetMTRPD = "asset:mtrpd" // The address for Mid-term reward pool dividend
 	MetaAssetLTEI  = "asset:ltei"  //The address for Long-term equity incentive
+)
+
+const (
+	StatusAvailable = 1000
+	StatusFrozen    = -2000
+	StatusInvalid   = -1000
 )
 
 type MetaID string
