@@ -4,8 +4,11 @@ import "github.com/hootuu/gelato/errors"
 
 const (
 	MetaName        = "name"
+	MetaIco         = "ico"
 	MetaUri         = "uri"
 	MetaDescription = "description"
+	MetaImages      = "images"
+	MetaVideos      = "videos"
 
 	MetaAssetTypeId   = "asset:id"
 	MetaAssetTypeCode = "asset:type:code"
