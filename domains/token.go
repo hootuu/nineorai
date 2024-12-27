@@ -43,6 +43,7 @@ type TokenAccount struct {
 	Supply   uint64           `json:"supply" bson:"supply"`
 	Balance  uint64           `json:"balance" bson:"balance"`
 	Decimals uint8            `json:"decimals" bson:"decimals"`
+	MintMeta Meta             `json:"mint_meta" bson:"mint_meta"`
 }
 
 func (t *TokenAccount) UiAmount() string {
