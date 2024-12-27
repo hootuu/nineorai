@@ -6,6 +6,17 @@ const (
 	MetaName        = "name"
 	MetaUri         = "uri"
 	MetaDescription = "description"
+
+	MetaAssetTypeId   = "asset:id"
+	MetaAssetTypeCode = "asset:type:code"
+	MetaAssetTypeName = "asset:type:name"
+	MetaAssetStatus   = "asset:status"
+	MetaAssetLocation = "asset:location"
+	MetaAssetLocMemo  = "asset:loc:memo"
+
+	MetaAssetSTOC  = "asset:stoc"  // The address for Short-term order commission
+	MetaAssetMTRPD = "asset:mtrpd" // The address for Mid-term reward pool dividend
+	MetaAssetLTEI  = "asset:ltei"  //The address for Long-term equity incentive
 )
 
 type MetaID string

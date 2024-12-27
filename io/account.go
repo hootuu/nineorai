@@ -11,6 +11,16 @@ type Account struct {
 	Signer  bool         `json:"signer" bson:"signer"`
 }
 
+type Accounts map[string]Account
+
+func NewAccounts() Accounts {
+	return make(Accounts)
+}
+func (as Accounts) Put(key string, acc Account) Accounts {
+	as[key] = acc
+	return as
+}
+
 type AccountSet []Account
 
 func NewAccountSet() AccountSet {

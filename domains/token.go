@@ -14,6 +14,10 @@ const (
 	TokenCtrlNonTransferable = 2
 	TokenCtrlBurnable        = 3
 	TokenCtrlNonCollateral   = 4
+
+	TokenCtrlSTOC  = 10 // Short-term order commission
+	TokenCtrlMTRPD = 11 // Mid-term reward pool dividend
+	TokenCtrlLTEI  = 12 // Long-term equity incentive
 )
 
 type TokenAddr = keys.Address
