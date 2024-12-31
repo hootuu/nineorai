@@ -8,8 +8,9 @@ import (
 )
 
 type TxLoad struct {
-	Authority keys.Address `json:"authority"`
-	Mint      keys.Address `json:"mint"`
+	Authority keys.Address     `json:"authority"`
+	Mint      keys.Address     `json:"mint"`
+	Page      *pagination.Page `json:"page" bson:"page"`
 }
 
 func (tx TxLoad) Validate() *errors.Error {
@@ -18,6 +19,9 @@ func (tx TxLoad) Validate() *errors.Error {
 	}
 	if tx.Mint.IsEmpty() {
 		return errors.Verify("require tx.mint")
+	}
+	if tx.Page == nil {
+		tx.Page = pagination.PageALL()
 	}
 	return nil
 }
