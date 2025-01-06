@@ -37,13 +37,14 @@ type Token struct {
 type TokenAccountAddr = keys.Address
 
 type TokenAccount struct {
-	Address  TokenAccountAddr `json:"address" bson:"address"`
-	Mint     TokenAddr        `json:"mint" bson:"mint"`
-	Symbol   TokenSymbol      `json:"symbol" bson:"symbol"`
-	Supply   uint64           `json:"supply" bson:"supply"`
-	Balance  uint64           `json:"balance" bson:"balance"`
-	Decimals uint8            `json:"decimals" bson:"decimals"`
-	MintMeta Meta             `json:"mint_meta" bson:"mint_meta"`
+	Address   TokenAccountAddr `json:"address" bson:"address"`
+	Authority keys.Address     `json:"authority" bson:"authority"`
+	Mint      TokenAddr        `json:"mint" bson:"mint"`
+	Symbol    TokenSymbol      `json:"symbol" bson:"symbol"`
+	Supply    uint64           `json:"supply" bson:"supply"`
+	Balance   uint64           `json:"balance" bson:"balance"`
+	Decimals  uint8            `json:"decimals" bson:"decimals"`
+	MintMeta  Meta             `json:"mint_meta" bson:"mint_meta"`
 }
 
 func (t *TokenAccount) UiAmount() string {
